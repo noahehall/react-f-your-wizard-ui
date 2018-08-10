@@ -66,7 +66,7 @@ export default class Wizard extends React.Component {
     showStep
   ) => (
     <React.Fragment>
-      {<button className='navigation-buttons left' disabled={stepIndex === 0} onClick={prevStep}> prev </button>}
+      {<button className={`navigation-buttons left ${stepIndex ===0 ? 'disabled' : ''}`} disabled={stepIndex === 0} onClick={prevStep}> prev </button>}
       {showStep}
       {<button className='navigation-buttons right' onClick={nextStep}> next </button>}
     </React.Fragment>
@@ -206,6 +206,10 @@ export default class Wizard extends React.Component {
       font-size: 16px;
       width: 100px;
       cursor: pointer;
+    }
+
+    .disabled {
+      cursor: not-allowed;
     }
 
     .progress-total-steps {

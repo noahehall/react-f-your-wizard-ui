@@ -11,7 +11,9 @@ export default function DefaultSteps () {
       Comp: (
         <div id='step-one'>
           <h1> Step One </h1>
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/I4qM33A2OH8" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe>
+          <div style={{ textAlign: 'center'}}>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/I4qM33A2OH8" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe>
+          </div>
         </div>
       ),
       css: (`
