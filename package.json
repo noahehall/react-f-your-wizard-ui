@@ -1,6 +1,6 @@
 {
   "name": "react-f-your-wizard-ui",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Reusable React component for creating multi-dimensional Wizard User Interfaces",
   "author": "noahehall",
   "license": "MIT",
