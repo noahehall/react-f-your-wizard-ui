@@ -1,6 +1,6 @@
 {
   "name": "react-f-your-wizard-ui",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Reusable React component for creating multi-dimensional Wizard User Interfaces",
   "author": "noahehall",
   "license": "MIT",
@@ -23,8 +23,8 @@
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
