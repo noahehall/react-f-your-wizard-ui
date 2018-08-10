@@ -1,0 +1,18 @@
+{
+  "presets": [
+    ["env", {
+      "modules": false
+    }],
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    ["transform-runtime", {
+      "polyfill": false,
+      "regenerator": true
+    }],
+    "external-helpers",
+    "transform-class-properties",
+    "transform-async-generator-functions"
+  ]
+}
