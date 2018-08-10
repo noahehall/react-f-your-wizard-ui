@@ -1,8 +1,7 @@
 import React from 'react';
 import GetComponentStyle from './GetComponentStyle';
 import Step from './Step';
-import DefaultSteps from './DefaultSteps';
-import createStep from './Step';
+import createStep from './Step/createStep';
 
 /**
  * tracks index of current step
@@ -194,28 +193,30 @@ export default class Wizard extends React.Component {
 
   // https://www.w3schools.com/css/css3_buttons.asp
   // TODO: this should be a prop
-  static wizardCss = (`
-    .navigation-buttons {
-      background-color: #4CAF50; /* Green */
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      width: 100px;
-      cursor: pointer;
-    }
+  static wizardCss = (
+    `
+      .navigation-buttons {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: 100px;
+        cursor: pointer;
+      }
 
-    .disabled {
-      cursor: not-allowed;
-    }
+      .disabled {
+        cursor: not-allowed;
+      }
 
-    .progress-total-steps {
-      width: calc(100% - 200px)
-    }
-  `)
+      .progress-total-steps {
+        width: calc(100% - 200px)
+      }
+    `
+  )
 
   render () {
     return (
@@ -229,6 +230,5 @@ export default class Wizard extends React.Component {
 
 export {
   createStep,
-  DefaultSteps,
   Step,
 }

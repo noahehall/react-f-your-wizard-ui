@@ -1,7 +1,6 @@
 import React from 'react'
-
 import Wizard from 'react-f-your-wizard-ui'
-import { DefaultSteps } from 'react-f-your-wizard-ui'
+import DefaultSteps from './DefaultSteps'
 
 /**
  * Primer  AI demo of wizard component
@@ -26,7 +25,7 @@ export default class PrimarAI extends React.Component {
 			<div id='example'>
 				<style>{this.getComponentStyle()}</style>
 				<Wizard
-					steps={DefaultSteps()}
+					steps={DefaultSteps}
 				/>
 			</div>
 		)

@@ -1,12 +1,11 @@
 import React from 'react';
-import createStep from './Step/createStep';
+import { createStep } from 'react-f-your-wizard-ui';
 
 /**
  * Default steps to demo Wizard Component
  * @constructor
  */
-export default function DefaultSteps () {
-  return [
+export default [
     createStep({
       Comp: (
         <div id='step-one'>
@@ -40,12 +39,7 @@ export default function DefaultSteps () {
         </div>
 
       ),
-      afterNavigation: () => alert('after navigation'),
       beforeNextNavigation: () => alert('The previous click demonsrates navigation to any step via index  (we used 0 to return to the beginning)'),
-      beforePrevNavigation: () => alert('before prev navigation'),
-      beforeFinalNavigation: () => alert('before final navigation'),
-      cancelPrevNavigation: () => window.confirm('Click OK to cancel navigation'),
       gotoStep: () => 0,
     }),
-  ]
-}
+]
