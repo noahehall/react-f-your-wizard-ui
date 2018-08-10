@@ -1,6 +1,5 @@
 import React from 'react';
 import GetComponentStyle from './GetComponentStyle';
-import DefaultSteps from './DefaultSteps';
 import Step from './Step';
 
 /**
@@ -26,7 +25,6 @@ export default class Wizard extends React.Component {
 		hideStepName: false,
 		hideStepProgressBar: false,
 		afterNavigationCallbackTimeout: 150,
-		steps: DefaultSteps()
 	}
 
 	static *processSteps (steps) {
@@ -222,3 +220,7 @@ export default class Wizard extends React.Component {
 		)
 	}
 }
+
+export DefaultSteps from './DefaultSteps';
+export Step fromm './Step';
+export createStep from './Step'

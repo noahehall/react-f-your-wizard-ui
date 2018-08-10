@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import Wizard from 'react-f-your-wizard-ui'
-
+import { DefaultSteps } from 'react-f-your-wizard-ui'
 
 /**
  * Primer  AI demo of wizard component
@@ -10,7 +10,7 @@ import Wizard from 'react-f-your-wizard-ui'
 export default class PrimarAI extends React.Component {
 	getComponentStyle = () => (
 		`
-			#primar-ai {
+			#example {
 				background-color: #F5F5F5;
 			}
 
@@ -23,9 +23,11 @@ export default class PrimarAI extends React.Component {
 
 	render() {
 		return (
-			<div id='primar-ai'>
+			<div id='example'>
 				<style>{this.getComponentStyle()}</style>
-				<Wizard />
+				<Wizard
+					steps={DefaultSteps()}
+				/>
 			</div>
 		)
 	}
