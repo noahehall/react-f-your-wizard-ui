@@ -1,13 +1,7 @@
-import React from 'react';
-import GetComponentStyle from './GetComponentStyle';
-import Step from './Step';
-import createStep from './Step/createStep';
-
-/**
- * tracks index of current step
- * @type {Number}
- */
-let stepIndex = 0;
+import React from 'react'
+import GetComponentStyle from './GetComponentStyle'
+import Step from './Step'
+import createStep from './Step/createStep'
 
 /**
  * Wizard React component
@@ -15,7 +9,16 @@ let stepIndex = 0;
  * @type {[type]}
  */
 export default class Wizard extends React.Component {
-  stepNavigator = Wizard.processSteps(this.props.steps); /* eslint-disable-line */
+  /**
+   * tracks index of current step
+   * @type {Number}
+   */
+  stepIndex = 0;
+  getStep = () => this.stepIndex;
+  stepNavigator = Wizard.processSteps(
+    this.props.steps,
+    this.getStep
+  ); /* eslint-disable-line */
 
   state = {
     step: this.stepNavigator.next()
@@ -25,22 +28,23 @@ export default class Wizard extends React.Component {
     showStep: true,
     hideStepName: false,
     hideStepProgressBar: false,
-    afterNavigationCallbackTimeout: 150,
+    afterNavigationCallbackTimeout: 150
   }
 
-  static *processSteps (steps) {
-    while (steps[stepIndex]) yield steps[stepIndex];
+  static * processSteps (steps, getStep) {
+    while (steps[getStep()]) yield steps[getStep()]
   }
 
   /** TODO: this should use the reflect API */
-  static showStep (
-    showStep,
+  static showStep ({
     hideStepName,
     hideStepProgressBar,
     name,
-    totalSteps,
-  ) {
-    if (!showStep) return null;
+    showStep,
+    stepIndex,
+    totalSteps
+  }) {
+    if (!showStep) return null
 
     return (
       <React.Fragment>
@@ -53,35 +57,49 @@ export default class Wizard extends React.Component {
             className='progress-total-steps'
             value={`${stepIndex + 1}`}
             max={`${totalSteps}`} />)
-            : null
-          }
+          : null
+        }
       </React.Fragment>
     )
   }
 
-  static renderNavigationActions = (
-    prevStep,
+  static renderNavigationActions = ({
     nextStep,
-    showStep
-  ) => (
+    prevStep,
+    showStep,
+    stepIndex
+  }) => (
     <React.Fragment>
-      {<button className={`navigation-buttons left ${stepIndex ===0 ? 'disabled' : ''}`} disabled={stepIndex === 0} onClick={prevStep}> prev </button>}
+      {
+        <button
+          className={`navigation-buttons left ${stepIndex === 0 ? 'disabled' : ''}`}
+          disabled={stepIndex === 0}
+          onClick={prevStep}
+        >prev
+        </button>
+      }
       {showStep}
-      {<button className='navigation-buttons right' onClick={nextStep}> next </button>}
+      {
+        <button
+          className='navigation-buttons right'
+          onClick={nextStep}
+        >next
+        </button>
+      }
     </React.Fragment>
   )
 
   componentDidUpdate (prevProps, prevState, snapshot) {
     if (
-      prevState.step && prevState.step.value
-      && (this.state.step.done || prevState.step.value.id !== this.state.step.value.id)
+      prevState.step && prevState.step.value &&
+      (this.state.step.done || prevState.step.value.id !== this.state.step.value.id)
     ) {
       setTimeout(() =>
         this.invokeNavigationCallback({
           step: prevState.step,
           navigationName: 'afterNavigation'
         }),
-        this.props.afterNavigationCallbackTimeout
+      this.props.afterNavigationCallbackTimeout
       )
     }
   }
@@ -91,8 +109,8 @@ export default class Wizard extends React.Component {
     value = this.state.step.value
   ) => {
     if (value) {
-      if (value.gotoStep) return (stepIndex = value.gotoStep())
-      else return (direction && ++stepIndex) || --stepIndex;
+      if (value.gotoStep) return (this.stepIndex = value.gotoStep())
+      else return (direction && ++this.stepIndex) || --this.stepIndex
     }
   }
 
@@ -102,16 +120,16 @@ export default class Wizard extends React.Component {
     isCompoundNavigation = false,
     direction
   }) => (
-    (!isCompoundNavigation
-      && step.value
-      && navigationName
-      && step.value[navigationName]
-      && step.value[navigationName]())
+    (!isCompoundNavigation &&
+      step.value &&
+      navigationName &&
+      step.value[navigationName] &&
+      step.value[navigationName]()) ||
 
-    || (isCompoundNavigation
-      && this.callBeforeNavigationIfSet(
-      direction,
-      step)
+    (isCompoundNavigation &&
+      this.callBeforeNavigationIfSet(
+        direction,
+        step)
     )
 
   )
@@ -123,10 +141,10 @@ export default class Wizard extends React.Component {
     !step.value
       ? null
       : direction > 0 && step.value.beforeNextNavigation
-      ? step.value.beforeNextNavigation()
-      : step.value.beforePrevNavigation
-      ? step.value.beforePrevNavigation()
-      : null
+        ? step.value.beforeNextNavigation()
+        : step.value.beforePrevNavigation
+          ? step.value.beforePrevNavigation()
+          : null
   )
 
   navigate = (
@@ -134,58 +152,63 @@ export default class Wizard extends React.Component {
     shouldNavigate = this.shouldNavigate(direction),
     step = this.state.step
   ) => {
-    if (shouldNavigate === false) return null;
+    if (shouldNavigate === false) return null
 
     // potentially next or prev
     this.invokeNavigationCallback({
       isCompoundNavigation: true,
       direction,
       step
-    });
+    })
 
     this.invokeNavigationCallback({
       step,
       navigationName: 'beforeFinalNavigation'
-    });
+    })
 
     this.setState({ step: this.stepNavigator.next() })
   }
 
-  //** TODO: refactor these to keep them DRY */
+  //* * TODO: refactor these to keep them DRY */
   nextStep = (e, value = this.state.step.value) => (
-    (value.cancelNextNavigation
-      && !value.cancelNextNavigation()
-      && this.navigate(1))
-    || (!value.cancelNextNavigation
-    && this.navigate(1))
+    (value.cancelNextNavigation &&
+      !value.cancelNextNavigation() &&
+      this.navigate(1)) ||
+    (!value.cancelNextNavigation &&
+    this.navigate(1))
   )
   prevStep = (e, value = this.state.step.value) => (
-    (value.cancelPrevNavigation
-      && !value.cancelPrevNavigation()
-      && this.navigate(0))
-    || (!value.cancelPrevNavigation
-    && this.navigate(0))
+    (value.cancelPrevNavigation &&
+      !value.cancelPrevNavigation() &&
+      this.navigate(0)) ||
+    (!value.cancelPrevNavigation &&
+    this.navigate(0))
   )
 
-
-  renderStep = (step = this.state.step) => (
+  renderStep = (
+    step = this.state.step
+  ) => (
     step.value
       ? (
         <React.Fragment>
           <Step css={step.value.css}>
             {step.value.Comp}
           </Step>
-          {Wizard.renderNavigationActions(
-            this.prevStep,
-            this.nextStep,
-            Wizard.showStep(
-              this.props.showStep,
-              this.props.hideStepName,
-              this.props.hideStepProgressBar,
-              step.value.Comp.name,
-              this.props.steps.length
-            )
-          )}
+          {
+            Wizard.renderNavigationActions({
+              prevStep: this.prevStep,
+              nextStep: this.nextStep,
+              stepIndex: this.stepIndex,
+              showStep: Wizard.showStep({
+                showStep: this.props.showStep,
+                hideStepName: this.props.hideStepName,
+                hideStepProgressBar: this.props.hideStepProgressBar,
+                name: step.value.Comp.name,
+                totalSteps: this.props.steps.length,
+                stepIndex: this.stepIndex
+              })
+            })
+          }
         </React.Fragment>
       )
       : null
@@ -230,5 +253,5 @@ export default class Wizard extends React.Component {
 
 export {
   createStep,
-  Step,
+  Step
 }

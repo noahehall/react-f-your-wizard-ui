@@ -1,5 +1,3 @@
-let stepCount = 1;
-
 /**
  * blah lets do this later?
  * @param  {[type]} [afterNavigation=null]          [description]
@@ -22,8 +20,9 @@ export default function createStep ({
   Comp = null,
   css = null,
   gotoStep = null,
-  id = Math.random() + stepCount++,
-  onError = null,
+  totalSteps = 100,
+  id = String(Math.random() * totalSteps),
+  onError = null
 }) {
   return {
     afterNavigation,
@@ -36,6 +35,6 @@ export default function createStep ({
     css,
     Comp,
     gotoStep,
-    id,
+    id
   }
 }
